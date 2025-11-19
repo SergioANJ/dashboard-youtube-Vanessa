@@ -15,7 +15,7 @@ oauthlib==3.3.1
 pandas==2.3.3
 proto-plus==1.26.1
 protobuf==6.33.1
-psycopg2-binary==2.9.9
+psycopg2-binary==2.9.3
 pyasn1==0.6.1
 pyasn1_modules==0.4.2
 pyparsing==3.2.5
@@ -28,4 +28,5 @@ six==1.17.0
 tzdata==2025.2
 uritemplate==4.2.0
 urllib3==2.5.0
+
 
