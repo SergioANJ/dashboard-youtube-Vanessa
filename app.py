@@ -9,16 +9,16 @@ from db import get_monthly_progress, get_yearly_progress, get_total_year_progres
 # =====================================================
 # CONEXIÓN A BD
 # =====================================================
+#=============Este conexión es para cuando se haga pruebas locales
+#def get_connection():
+#    return psycopg2.connect(
+#        host="localhost",
+#        database="proyecto_Vanessa",
+#        user="soporte",
+#        password="soporte",
+#        port="5433"
+#    )
 
-"""def get_connection():
-    return psycopg2.connect(
-        host="localhost",
-        database="proyecto_Vanessa",
-        user="soporte",
-        password="soporte",
-        port="5433"
-    )
-"""
 def get_connection():
     return psycopg2.connect(
         host="tramway.proxy.rlwy.net",
@@ -100,6 +100,9 @@ def get_top_videos(start_date, end_date, id_subcuenta):
     conn.close()
     return df
 
+def logout():
+    """Resetea el estado de sesión y fuerza un rerunn a la página de login."""
+    st.session_state.logged_in = False
 
 # =====================================================
 # UI STREAMLIT
@@ -114,23 +117,35 @@ if "logged_in" not in st.session_state:
 
 if not st.session_state.logged_in:
 
-    st.title("🔐 Inicio de sesión")
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.title("🔐 Inicio de sesión")
 
-    username = st.text_input("Usuario")
-    password = st.text_input("Contraseña", type="password")
+        username = st.text_input("Usuario")
+        password = st.text_input("Contraseña", type="password")
 
-    if st.button("Ingresar"):
-        user_id, role, id_subcuenta = authenticate_user(username, password)
+        if st.button("Ingresar"):
+            user_id, role, id_subcuenta = authenticate_user(username, password)
 
-        if user_id:
-            st.session_state.logged_in = True
-            st.session_state.user_id = user_id
-            st.session_state.role = role
-            st.session_state.id_subcuenta = id_subcuenta
-            st.rerun()
-        else:
-            st.error("❌ Usuario o contraseña incorrectos.")
-
+            if user_id:
+                st.session_state.logged_in = True
+                st.session_state.user_id = user_id
+                st.session_state.role = role
+                st.session_state.id_subcuenta = id_subcuenta
+                st.rerun()
+            else:
+                st.error("❌ Usuario o contraseña incorrectos.")
+        
+       
+        try :
+            st.image(
+                "assets/logo_color.png", # Asegúrate de que este sea el nombre exacto de tu archivo
+                width=800,
+                
+            )
+        except FileNotFoundError:
+            st.error("Error: Archivo de imagen 'assets/logo_canal.png' no encontrado. Asegúrate de que el path es correcto en GitHub.")
+        
     st.stop()
 
 
@@ -150,6 +165,15 @@ end_date = st.sidebar.date_input("Fecha final", date(2025, 1, 31))
 
 if start_date > end_date:
     st.sidebar.error("⚠ La fecha inicial no puede ser mayor a la final.")
+
+# ----------- Sidebar: Botón de Cierre de Sesión --------------------
+st.sidebar.markdown("---") # Separador visual
+
+# El botón llama a la función 'logout' que resetea el estado
+if st.sidebar.button("🚪 Cerrar Sesión"):
+    logout()
+    st.rerun() # Forzamos el rerunn para que vuelva a evaluar la condición de login
+
 
 # ----------- Consultar datos ------------------------
 df_daily = get_channel_metrics(start_date, end_date, id_subcuenta)
