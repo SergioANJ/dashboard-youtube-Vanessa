@@ -1,7 +1,8 @@
 import psycopg2
 import pandas as pd
 
-def get_connection():
+#Este parte de conexión de base de datos es para cuando se quieran hacer pruebas locales
+"""def get_connection():
     return psycopg2.connect(
         host="localhost",
         database="proyecto_Vanessa",
@@ -9,8 +10,15 @@ def get_connection():
         password="soporte",
         port="5433"
     )
-
-
+"""
+def get_connection():
+    return psycopg2.connect(
+        host="tramway.proxy.rlwy.net",
+        port="39475",
+        database="railway",
+        user="postgres",
+        password="NbKdnAOqBmgMXaLhwhhiDxcudsQCyLxD"
+    )
 # =====================================================
 #  UPSERT: Métricas diarias del canal
 # =====================================================
