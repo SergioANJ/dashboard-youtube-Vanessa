@@ -1,6 +1,7 @@
 import psycopg2
 import pandas as pd
 
+"""
 def get_connection():
     return psycopg2.connect(
         host="localhost",
@@ -9,7 +10,16 @@ def get_connection():
         password="soporte",
         port="5433"
     )
+"""
 
+def get_connection():
+    return psycopg2.connect(
+        host="tramway.proxy.rlwy.net",
+        port="39475",
+        database="railway",
+        user="postgres",
+        password="NbKdnAOqBmgMXaLhwhhiDxcudsQCyLxD"
+    )
 
 # =====================================================
 #  UPSERT: Métricas diarias del canal
